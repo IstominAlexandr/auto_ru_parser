@@ -6,7 +6,7 @@ from src.to_csv import save_to_file
 
 def main():
     data = parse_response(input("Please enter a URL to parse: ").strip())
-    if not len(data):
+    if not data or not len(data):
         print("No data found")
         return
 
