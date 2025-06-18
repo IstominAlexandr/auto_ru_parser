@@ -2,10 +2,21 @@
 
 # csv files
 CSV_FILE_NAME = "cars_{current_data}.csv"
-CAR_COLUMN_TITLE = "Car"
-LINK_COLUMN_TITLE = "Link"
-PRICE_COLUMN_TITLE = "Price (RUR)"
-PROD_YEAR_COLUMN_TITLE = "Year"
+URL_TITLE = "link"
+CAR_TITLE = "car_title"
+PRICE_TITLE = "price_rub"
+YEAR_TITLE = "year"
+FEATURES_TITLE = "features"
+BOX_TITLE = "box_type"
+CAR_TYPE_TITLE = "car_type"
+DRIVE_TYPE_TITLE = "drive_type"
+COLOR_TITLE = "color"
+KM_AGE_TITLE = "km_age"
+CITY_TITLE = "city"
+CAR_ORDER = "order"
+SNAPSHOT_DTM = "snapshot_dtm"
+
+
 
 # html tags
 A_TAG = "a"
@@ -21,6 +32,8 @@ ITEM_PRICE_CONTENT = "ListingItem__priceBlock"
 ITEM_SUMMARY = "ListingItem__summary"
 ITEM_TITLE_LINK = "Link ListingItemTitle__link"
 ITEM_YEAR = "ListingItem__yearBlock"
+KM_AGE = "ListingItem__kmAge"
+
 
 # OS name
 WINDOWS = "nt"

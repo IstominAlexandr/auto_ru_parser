@@ -19,15 +19,37 @@ def save_to_file(data) -> None:
         w = csv.writer(file, delimiter=";")
         w.writerow(
             [
-                strings.CAR_COLUMN_TITLE,
-                strings.LINK_COLUMN_TITLE,
-                strings.PRICE_COLUMN_TITLE,
-                strings.PROD_YEAR_COLUMN_TITLE,
+                strings.URL_TITLE,
+                strings.CAR_TITLE,
+                strings.PRICE_TITLE,
+                strings.YEAR_TITLE,
+                strings.FEATURES_TITLE,
+                strings.BOX_TITLE,
+                strings.CAR_TYPE_TITLE,
+                strings.DRIVE_TYPE_TITLE,
+                strings.COLOR_TITLE,
+                strings.KM_AGE_TITLE,
+                strings.CITY_TITLE,
+                strings.CAR_ORDER,
+                strings.SNAPSHOT_DTM
             ]
         )
 
         for car in data:
-            w.writerow([car.description, car.url, car.price, car.year])
+            w.writerow([car.url,
+                        car.car_title,
+                        car.price,
+                        car.year,
+                        car.features,
+                        car.box,
+                        car.car_type,
+                        car.drive_type,
+                        car.color,
+                        car.km_age,
+                        car.city,
+                        car.order,
+                        car.snapshot_dtm
+                ])
 
     if app_settings.OPEN_CSV_FILE:
         _open_csv_file(file_path)

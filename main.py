@@ -15,3 +15,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    # https://auto.ru/moskva/cars/vendor-foreign/all/engine-benzin/?resolution_filter=is_accidents_ok&steering_wheel=LEFT&transmission=AUTOMATIC&body_type_group=HATCHBACK_5_DOORS&body_type_group=ALLROAD_5_DOORS&body_type_group=SEDAN

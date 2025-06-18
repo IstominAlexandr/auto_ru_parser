@@ -11,6 +11,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from datetime import datetime
 
 from settings import app_settings
 from src import strings
@@ -27,7 +28,7 @@ def get_pages_amount(content: bytes) -> int:
     if not target_data:
         return 0
 
-    return len(target_data.contents)
+    return int(target_data.contents[-1].get_text())
 
 
 def parse_content(*, content: bytes) -> list[Car]:
@@ -38,13 +39,23 @@ def parse_content(*, content: bytes) -> list[Car]:
     items = soup.find_all(strings.DIV_TAG, class_="ListingItem__description")
 
     for item in items:
-        car_data = ""
-        if car_content := item.find(strings.DIV_TAG, strings.ITEM_SUMMARY):
-            car_data = car_content.get_text()
+        if  car_content := item.find(strings.DIV_TAG, strings.ITEM_SUMMARY):
+            car_name = car_name_raw.get_text() if (car_name_raw := car_content.find(strings.A_TAG, strings.ITEM_TITLE_LINK)) else ""
+            features = car_content.find_all(class_="ListingItemTechSummaryDesktop__cell")[0].get_text()
+            box = car_content.find_all(class_="ListingItemTechSummaryDesktop__cell")[1].get_text()
+            car_type = car_content.find_all(class_="ListingItemTechSummaryDesktop__cell")[2].get_text()
+            drive_type = car_content.find_all(class_="ListingItemTechSummaryDesktop__cell")[3].get_text()
+            color = car_content.find_all(class_="ListingItemTechSummaryDesktop__cell")[4].get_text()
+            city = item.find("span","MetroListPlace__regionName MetroListPlace_nbsp").get_text().replace(strings.NBSP_CODE, "")
+            order_name = car_order.get_text() if (car_order := item.find(strings.DIV_TAG, "ListingItemInStock-awRrm ListingItemInStock_request-YqrMT ListingItem__stock")) else ""
 
-        url = item.find(strings.A_TAG, strings.ITEM_TITLE_LINK).get(
-            strings.HREF_TAG, ""
-        )
+
+
+        if url_find := item.find(strings.A_TAG, strings.ITEM_TITLE_LINK):
+            try:
+                url = url_find.get(strings.HREF_TAG, "")
+            except ValueError:
+                url = ""
 
         car_price = 0
         if price_content := item.find(strings.DIV_TAG, strings.ITEM_PRICE_CONTENT):
@@ -56,6 +67,16 @@ def parse_content(*, content: bytes) -> list[Car]:
                 except ValueError:
                     car_price = 0
 
+        km_age = 0
+        if km_content := item.find("div","ListingItem__kmAge"):
+            raw_km = km_content.get_text()
+            km_data = raw_km.replace(strings.NBSP_CODE, "").replace("км","")
+            if len(km_data):
+                try:
+                    km_age = int(km_data)
+                except ValueError:
+                    km_age = 0
+
         prod_year = 0
         if year_data := item.find(strings.DIV_TAG, strings.ITEM_YEAR):
             try:
@@ -65,10 +86,19 @@ def parse_content(*, content: bytes) -> list[Car]:
 
         cars.append(
             Car(
-                description=car_data,
                 url=url,
+                car_title=car_name,
                 price=car_price,
                 year=prod_year,
+                features=features,
+                box=box,
+                car_type=car_type,
+                drive_type=drive_type,
+                color=color,
+                km_age = km_age,
+                city=city,
+                order = order_name,
+                snapshot_dtm = datetime.now()
             )
         )
 
